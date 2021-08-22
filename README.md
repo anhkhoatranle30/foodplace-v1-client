@@ -1,5 +1,11 @@
 # App Information
 
+## Production Link
+
+Visit my app via [this link](https://khoatrang-wtfood.netlify.app/)
+
+## Libraries
+
 - ReactJS
 - MaterialUI
 - react-hook-form
