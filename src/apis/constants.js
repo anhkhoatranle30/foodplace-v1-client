@@ -1,7 +1,7 @@
 // Constants.js
 const prod = {
   url: {
-    API_URL: `https://khoatrn-foodplace-v1.herokuapp.com/`,
+    API_URL: `https://khoatrn-foodplace-v1.herokuapp.com`,
   },
 };
 const dev = {
