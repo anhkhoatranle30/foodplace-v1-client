@@ -21,6 +21,8 @@ function App() {
     }
   }, [isUserLoggedIn, dispatch, token]);
 
+  console.log(`mode: ${process.env.NODE_ENV}`);
+
   return (
     <BrowserRouter>
       <NavBar />
