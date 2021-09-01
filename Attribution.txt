@@ -3,3 +3,4 @@
 <a href="https://storyset.com/technology">Technology illustrations by Storyset</a>
 <a href="https://storyset.com/online">Online illustrations by Storyset</a>
 <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+<a href="https://storyset.com/web">Web illustrations by Storyset</a>

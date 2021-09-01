@@ -6,10 +6,14 @@ import MaintenancePage from "../../pages/MaintenancePage";
 import PlaceList from "../../pages/Place/PlaceList";
 import PlaceCreate from "../../pages/Place/PlaceCreate";
 import AboutPage from "../../pages/AboutPage";
+import CategoryList from "../../pages/Category/CategoryList";
+import CategoryCreate from "../../pages/Category/CategoryCreate";
 
 const useStyles = makeStyles({
   main: {
     width: "100%",
+    minHeight: "100vh",
+    marginTop: "10px",
   },
 });
 
@@ -30,6 +34,12 @@ export default function AuthenticatedRoute() {
         </Route>
         <Route path="/about">
           <AboutPage />
+        </Route>
+        <Route exact path="/categories">
+          <CategoryList />
+        </Route>
+        <Route exact path="/categories/new">
+          <CategoryCreate />
         </Route>
         <Route path="*">
           <MaintenancePage />

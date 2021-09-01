@@ -50,6 +50,9 @@ export default function AboutPage() {
             </a>
           </div>
         </li>
+        <li>
+          <a href="https://storyset.com/web">Web illustrations by Storyset</a>
+        </li>
       </ul>
     </Container>
   );

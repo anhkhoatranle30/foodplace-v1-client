@@ -13,9 +13,18 @@ const fetchAll = (token) =>
       Authorization: `Bearer ${token}`,
     },
   });
+
+const fetchNumberOfPlaces = (token, categoryId) =>
+  rootApi.get(`/categories/${categoryId}/countPlaces`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
 const categoryApi = {
   fetchById,
   fetchAll,
+  fetchNumberOfPlaces,
 };
 
 export default categoryApi;
