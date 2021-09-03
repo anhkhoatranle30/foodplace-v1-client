@@ -15,7 +15,6 @@ export default function CategoryCreate() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(categorySchema),
