@@ -25,16 +25,21 @@ export default function FavoriteSection() {
   const classes = useStyles();
 
   const [topFavorites, setTopFavorites] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const token = useSelector((state) => state.user.token);
 
   useEffect(() => {
     async function fetchTopFavorites() {
+      setLoading(true);
       try {
         const response = await placeApi.fetchTop9Favorites(token);
         setTopFavorites(response.data);
-      } catch (error) {
-        window.alert(error);
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        setError(err);
       }
     }
 
@@ -52,10 +57,13 @@ export default function FavoriteSection() {
         {/* List card here */}
         {topFavorites.length > 0 ? (
           <FavoriteCarousel topFavorites={topFavorites} />
+        ) : isLoading ? (
+          "Loading ..."
         ) : (
-          "0 items"
+          "0 item"
         )}
       </Grid>
+      <p>{error?.message}</p>
     </Grid>
   );
 }

@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import placeApi from "./../../../apis/placeApi";
 import PlaceCard from "./../../../components/PlaceCard";
+import EmptyPlaceholder from "../../../components/EmptyPlaceholder";
 
 const useStyles = makeStyles({
   formControl: {
@@ -30,6 +31,7 @@ export default function PlacesList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [places, setPlaces] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     async function fetchQuantity() {
       try {
@@ -44,14 +46,17 @@ export default function PlacesList() {
   }, [token]);
   useEffect(() => {
     async function fetchPlaces() {
+      setIsLoading(true);
       try {
         const placesResponse = await placeApi.fetchAll(token, {
           skip: itemsEachPage * (currentPage - 1),
           limit: itemsEachPage,
         });
         setPlaces(placesResponse.data);
+        setIsLoading(false);
       } catch (error) {
-        window.alert(error.response.data);
+        console.log(error.response.data);
+        setIsLoading(false);
       }
     }
 
@@ -69,13 +74,37 @@ export default function PlacesList() {
 
   const renderPlaces = () => {
     if (places.length === 0) {
-      return "0 item";
+      return (
+        <EmptyPlaceholder
+          title="No place found!"
+          body="It seems like you have not added any place yet. Click the `Add a place` button to see more."
+        />
+      );
     }
     return places.map((place) => (
       <Grid key={place._id} item xs={12} sm={6} md={4} lg={3}>
         <PlaceCard place={place} />
       </Grid>
     ));
+  };
+
+  const renderSkeletonPlaces = () => {
+    const result = [];
+    for (let i = 0; i <= 10; i++) {
+      result.push(
+        <Grid
+          key={`place-card-skeleton-${i}`}
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
+        >
+          <PlaceCard isSkeleton />
+        </Grid>
+      );
+    }
+    return result;
   };
 
   const renderCategories = (categoriesArray) => {
@@ -136,7 +165,7 @@ export default function PlacesList() {
         <Grid></Grid>
         {/* cards list */}
         <Grid container alignItems="center">
-          {renderPlaces()}
+          {isLoading ? renderSkeletonPlaces() : renderPlaces()}
         </Grid>
         {/* pagination */}
         <Grid>
