@@ -21,10 +21,18 @@ const fetchNumberOfPlaces = (token, categoryId) =>
     },
   });
 
+const postCategory = (token, body) =>
+  rootApi.post("/categories", body, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
 const categoryApi = {
   fetchById,
   fetchAll,
   fetchNumberOfPlaces,
+  postCategory,
 };
 
 export default categoryApi;
