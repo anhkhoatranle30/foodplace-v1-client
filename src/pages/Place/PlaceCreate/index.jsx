@@ -291,6 +291,7 @@ export default function PlaceCreate() {
               fullWidth
               className={classes.formControl}
               variant="outlined"
+              error={errors.description ? true : false}
             >
               <InputLabel id="new-place-description-label">
                 Description
@@ -302,6 +303,7 @@ export default function PlaceCreate() {
                 rows={4}
                 {...register("description")}
               />
+              <FormHelperText>{errors.description?.message}</FormHelperText>
             </FormControl>
           </Grid>
           {/* image upload */}

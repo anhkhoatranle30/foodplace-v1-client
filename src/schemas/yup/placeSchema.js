@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 const placeSchema = yup.object().shape({
   name: yup.string().min(1).max(30).required(),
-  description: yup.string().max(1000),
+  description: yup.string().max(1000).required(),
   rating: yup.number().min(0).max(10),
   address: yup.string().required(),
   openingHours: yup.object().shape({
