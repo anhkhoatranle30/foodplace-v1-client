@@ -1,10 +1,11 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, LinearProgress, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState, useEffect } from "react";
 import favoriteBg from "../../static/images/favorite-background.svg";
 import FavoriteCarousel from "./favoriteCarousel";
 import { useSelector } from "react-redux";
 import placeApi from "./../../apis/placeApi";
+import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 
 const useStyles = makeStyles({
   blobBackground: {
@@ -18,6 +19,9 @@ const useStyles = makeStyles({
   title: {
     textTransform: "uppercase",
     fontWeight: 700,
+  },
+  linearLoading: {
+    width: "100%",
   },
 });
 
@@ -58,9 +62,12 @@ export default function FavoriteSection() {
         {topFavorites.length > 0 ? (
           <FavoriteCarousel topFavorites={topFavorites} />
         ) : isLoading ? (
-          "Loading ..."
+          <LinearProgress className={classes.linearLoading} />
         ) : (
-          "0 item"
+          <EmptyPlaceholder
+            title="No favorite found!"
+            body="Go to Places tab and like some places :3"
+          />
         )}
       </Grid>
       <p>{error?.message}</p>
