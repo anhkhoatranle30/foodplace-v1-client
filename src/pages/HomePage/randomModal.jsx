@@ -101,9 +101,6 @@ export default function RandomModal({ isOpen, onClose }) {
           alignItems="center"
           justifyContent="center"
         >
-          <Grid className={classes.body} item xs={12}>
-            {renderBody()}
-          </Grid>
           <Grid item xs={12}>
             <form
               onSubmit={handleSubmit(handleFormSubmit)}
@@ -147,6 +144,9 @@ export default function RandomModal({ isOpen, onClose }) {
                 </Grid>
               </Grid>
             </form>
+          </Grid>
+          <Grid className={classes.body} item xs={12}>
+            {renderBody()}
           </Grid>
         </Grid>
       </Paper>
