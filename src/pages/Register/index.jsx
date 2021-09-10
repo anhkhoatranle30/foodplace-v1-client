@@ -1,4 +1,5 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+/* eslint-disable react/jsx-props-no-spreading */
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
   FormControl,
@@ -11,29 +12,28 @@ import {
   Typography,
   Backdrop,
   CircularProgress,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
-import clsx from "clsx";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { registerUserAction } from "../../app/slices/userSlice";
-import useFormStyles from "../../hooks/useFormStyle";
-import { signupSchema } from "../../schemas/yup";
-import banner from "../../static/images/banner-login.svg";
-import { useHistory } from "react-router-dom";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
+import clsx from 'clsx';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { registerUserAction } from '../../app/slices/userSlice';
+import useFormStyles from '../../hooks/useFormStyle';
+import { signupSchema } from '../../schemas/yup';
+import banner from '../../static/images/banner-login.svg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingTop: "20px",
+    paddingTop: '20px',
   },
   margin: {
     margin: theme.spacing(1),
   },
   banner: {
-    height: "auto",
+    height: 'auto',
   },
 }));
 
@@ -63,12 +63,11 @@ export default function Signup() {
   };
 
   const handleFormSubmit = async (data) => {
-    console.log(data);
     const result = await dispatch(
-      registerUserAction({ email: data.email, password: data.password })
+      registerUserAction({ email: data.email, password: data.password }),
     );
-    if (result.meta.requestStatus === "fulfilled") {
-      history.push("/");
+    if (result.meta.requestStatus === 'fulfilled') {
+      history.push('/');
     }
   };
 
@@ -77,7 +76,7 @@ export default function Signup() {
       {/* loading backdrop */}
       <Backdrop
         className={formClasses.backdrop}
-        open={user.status === "loading"}
+        open={user.status === 'loading'}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -108,13 +107,13 @@ export default function Signup() {
             autoComplete="off"
             className={formClasses.root}
           >
-            <FormControl error={user.status === "error"}>
+            <FormControl error={user.status === 'error'}>
               <FormHelperText>{user.error?.message}</FormHelperText>
             </FormControl>
             <FormControl
               variant="outlined"
               className={clsx(classes.margin, formClasses.textField)}
-              error={errors.email ? true : false}
+              error={!!errors.email}
             >
               <InputLabel htmlFor="outlined-input-email">Email</InputLabel>
               <OutlinedInput
@@ -122,14 +121,14 @@ export default function Signup() {
                 id="outlined-input-email"
                 type="email"
                 labelWidth={40}
-                {...register("email")}
+                {...register('email')}
               />
               <FormHelperText>{errors.email?.message}</FormHelperText>
             </FormControl>
             <FormControl
               className={clsx(classes.margin, formClasses.textField)}
               variant="outlined"
-              error={errors.password ? true : false}
+              error={!!errors.password}
             >
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
@@ -137,8 +136,8 @@ export default function Signup() {
               <OutlinedInput
                 autoComplete="new-password"
                 id="outlined-adornment-password"
-                type={values.showPassword ? "text" : "password"}
-                endAdornment={
+                type={values.showPassword ? 'text' : 'password'}
+                endAdornment={(
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
@@ -149,16 +148,16 @@ export default function Signup() {
                       {values.showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
-                }
+                )}
                 labelWidth={70}
-                {...register("password")}
+                {...register('password')}
               />
               <FormHelperText>{errors.password?.message}</FormHelperText>
             </FormControl>
             <FormControl
               className={clsx(classes.margin, formClasses.textField)}
               variant="outlined"
-              error={errors.confirmPassword ? true : false}
+              error={!!errors.confirmPassword}
             >
               <InputLabel htmlFor="outlined-adornment-password2">
                 Password Confirmation
@@ -166,8 +165,8 @@ export default function Signup() {
               <OutlinedInput
                 autoComplete="password"
                 id="outlined-adornment-password2"
-                type={values.showPassword ? "text" : "password"}
-                endAdornment={
+                type={values.showPassword ? 'text' : 'password'}
+                endAdornment={(
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
@@ -178,9 +177,9 @@ export default function Signup() {
                       {values.showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
-                }
+                )}
                 labelWidth={170}
-                {...register("confirmPassword")}
+                {...register('confirmPassword')}
               />
               <FormHelperText>{errors.confirmPassword?.message}</FormHelperText>
             </FormControl>

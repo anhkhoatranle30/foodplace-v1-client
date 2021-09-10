@@ -1,4 +1,5 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+/* eslint-disable react/jsx-props-no-spreading */
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
   Container,
@@ -12,28 +13,28 @@ import {
   Typography,
   Backdrop,
   CircularProgress,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
-import clsx from "clsx";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { loginUserAction } from "../../app/slices/userSlice";
-import useFormStyles from "../../hooks/useFormStyle";
-import { loginSchema } from "../../schemas/yup";
-import banner from "../../static/images/banner-login.svg";
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
+import clsx from 'clsx';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { loginUserAction } from '../../app/slices/userSlice';
+import useFormStyles from '../../hooks/useFormStyle';
+import { loginSchema } from '../../schemas/yup';
+import banner from '../../static/images/banner-login.svg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingTop: "20px",
+    paddingTop: '20px',
   },
   margin: {
     margin: theme.spacing(1),
   },
   banner: {
-    height: "auto",
+    height: 'auto',
   },
 }));
 
@@ -41,8 +42,8 @@ export default function Login() {
   const classes = useStyles();
   const formClasses = useFormStyles();
   const [values, setValues] = React.useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
     showPassword: false,
   });
   const {
@@ -65,7 +66,7 @@ export default function Login() {
 
   const handleFormSubmit = (formData) => {
     dispatch(
-      loginUserAction({ email: formData.email, password: formData.password })
+      loginUserAction({ email: formData.email, password: formData.password }),
     );
   };
 
@@ -74,7 +75,7 @@ export default function Login() {
       {/* loading backdrop */}
       <Backdrop
         className={formClasses.backdrop}
-        open={user.status === "loading"}
+        open={user.status === 'loading'}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -104,14 +105,14 @@ export default function Login() {
             className={formClasses.root}
             id="loginForm"
           >
-            <FormControl error={user.status === "error"}>
+            <FormControl error={user.status === 'error'}>
               <FormHelperText>{user.error?.message}</FormHelperText>
             </FormControl>
 
             <FormControl
               variant="outlined"
               className={clsx(classes.margin, formClasses.textField)}
-              error={errors.email ? true : false}
+              error={!!errors.email}
             >
               <InputLabel htmlFor="outlined-input-email">Email</InputLabel>
               <OutlinedInput
@@ -119,14 +120,14 @@ export default function Login() {
                 id="outlined-input-email"
                 type="email"
                 labelWidth={40}
-                {...register("email")}
+                {...register('email')}
               />
               <FormHelperText>{errors.email?.message}</FormHelperText>
             </FormControl>
             <FormControl
               className={clsx(classes.margin, formClasses.textField)}
               variant="outlined"
-              error={errors.password ? true : false}
+              error={!!errors.password}
             >
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
@@ -134,8 +135,8 @@ export default function Login() {
               <OutlinedInput
                 autoComplete="new-password"
                 id="outlined-adornment-password"
-                type={values.showPassword ? "text" : "password"}
-                endAdornment={
+                type={values.showPassword ? 'text' : 'password'}
+                endAdornment={(
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
@@ -146,9 +147,9 @@ export default function Login() {
                       {values.showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
-                }
+                )}
                 labelWidth={70}
-                {...register("password")}
+                {...register('password')}
               />
               <FormHelperText>{errors.password?.message}</FormHelperText>
             </FormControl>

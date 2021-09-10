@@ -1,6 +1,7 @@
 export const STATUS = {
-  IDLE: "idle",
-  LOADING: "loading",
-  SUCCESS: "success",
-  ERROR: "error",
+  IDLE: 'idle',
+  LOADING: 'loading',
+  SUCCESS: 'success',
+  ERROR: 'error',
 };
+export const foo = 'foo';
