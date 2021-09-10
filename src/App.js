@@ -7,11 +7,13 @@ import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute/index";
 import { fetchAllCategoriesAction } from "./app/slices/categorySlice";
+import EmailVerificationNotification from "./pages/EmailVerification/EmailVerificationNotification"
 
 function App() {
   const isUserLoggedIn = useSelector(
     (state) => state.user.status === "success"
   );
+  const isUserEmailVerified = useSelector(state => state.user.confirmed === true)
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
 
@@ -26,7 +28,7 @@ function App() {
   return (
     <BrowserRouter>
       <NavBar />
-      {isUserLoggedIn ? <AuthenticatedRoute /> : <UnauthenticatedRoute />}
+      {isUserLoggedIn ? (isUserEmailVerified ? <AuthenticatedRoute /> : <EmailVerificationNotification/>) : <UnauthenticatedRoute />}
       <Footer />
     </BrowserRouter>
   );

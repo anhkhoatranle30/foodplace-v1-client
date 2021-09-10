@@ -1,9 +1,9 @@
-import React from "react";
-import { Container } from "@material-ui/core";
+import React from 'react';
+import { Container } from '@material-ui/core';
 
 export default function AboutPage() {
   return (
-    <Container style={{ minHeight: "90vh" }}>
+    <Container style={{ minHeight: '90vh' }}>
       <h1>Motivation</h1>
       <p>
         Me and my girlfriend - Trang both love food, esp. street food. So I made
@@ -12,7 +12,8 @@ export default function AboutPage() {
       </p>
       <h1>Owner</h1>
       <p>
-        My name is Khoa and I am the creator of this app. You can visit me via :{" "}
+        My name is Khoa and I am the creator of this app. You can visit me via :
+        {' '}
         <a href="https://khoatrn.netlify.app">this link</a>
       </p>
       <h1>Attribution</h1>
@@ -40,11 +41,14 @@ export default function AboutPage() {
         </li>
         <li>
           <div>
-            Icons made by{" "}
+            Icons made by
+            {' '}
             <a href="https://www.freepik.com" title="Freepik">
               Freepik
-            </a>{" "}
-            from{" "}
+            </a>
+            {' '}
+            from
+            {' '}
             <a href="https://www.flaticon.com/" title="Flaticon">
               www.flaticon.com
             </a>
@@ -52,6 +56,9 @@ export default function AboutPage() {
         </li>
         <li>
           <a href="https://storyset.com/web">Web illustrations by Storyset</a>
+        </li>
+        <li>
+          <a href="https://storyset.com/communication">Communication illustrations by Storyset</a>
         </li>
       </ul>
     </Container>
