@@ -3,13 +3,13 @@ import {
   Button,
   CircularProgress, Container, Grid, Typography,
 } from '@material-ui/core';
-import { CheckCircle, Error } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import useQuery from '../../hooks/useQuery';
 import { STATUS } from '../../constant';
 import userApi from '../../apis/userApi';
 import SuccessImg from '../../static/images/email-verification-success.svg';
+import ErrorImg from '../../static/images/email-verification-error.svg';
 
 const useStyles = makeStyles({
   root: {
@@ -18,8 +18,13 @@ const useStyles = makeStyles({
   success: {
     color: '#0B7FAB',
   },
+  error: {
+    color: 'red',
+  },
   img: {
-    width: '300px',
+    width: '60%',
+    minWidth: '300px',
+    maxWidth: '500px',
     height: 'auto',
   },
 });
@@ -38,7 +43,7 @@ export default function EmailVerificationResult() {
       setStatus(STATUS.SUCCESS);
     } catch (err) {
       setStatus(STATUS.ERROR);
-      setError(err);
+      setError(err.response.data);
     }
   };
 
@@ -58,23 +63,24 @@ export default function EmailVerificationResult() {
       }
       case STATUS.ERROR: {
         return (
-          <>
-            <Error />
-            <Typography>
-              Error :
-              {' '}
-              {error.message}
-              . Please try again later!
-            </Typography>
-          </>
+          <Grid className={classes.error} container direction="column" alignItems="center" justifyContent="center">
+            <Grid container alignItems="center" justifyContent="center">
+              <Typography variant="h4">
+                Error :
+                {' '}
+                {error?.message}
+                . Please try again later!
+              </Typography>
+            </Grid>
+            <img className={classes.img} src={ErrorImg} alt="failed-email-verification" />
+          </Grid>
         );
       }
       default: {
         return (
           <Grid className={classes.success} container direction="column" alignItems="center" justifyContent="center">
             <Grid container alignItems="center" justifyContent="center">
-              <CheckCircle />
-              <Typography>
+              <Typography variant="h4">
                 Congratulations! You have successfully registered.
                 <Button color="primary" component={Link} to="/">
                   Login your account.
@@ -91,7 +97,7 @@ export default function EmailVerificationResult() {
   return (
     <Container>
       <Grid className={classes.root} container direction="column" alignItems="center" justifyContent="center">
-        <Typography variant="h5">Email Verification</Typography>
+        <Typography variant="h3">Email Verification</Typography>
         {renderBody()}
       </Grid>
     </Container>
