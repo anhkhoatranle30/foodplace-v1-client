@@ -5,19 +5,19 @@ import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 
 export default function UnauthenticatedRoute() {
-  return (
-    <div style={{ minHeight: '95vh' }}>
-      <Switch>
-        <Route exact path="/register">
-          <Register />
-        </Route>
-        <Route path="/users/confirmation">
-          <EmailVerificationResult />
-        </Route>
-        <Route path="*">
-          <Login />
-        </Route>
-      </Switch>
-    </div>
-  );
+	return (
+		<div style={{ minHeight: '95vh' }}>
+			<Switch>
+				<Route exact path="/register">
+					<Register />
+				</Route>
+				<Route path="/users/confirmation">
+					<EmailVerificationResult />
+				</Route>
+				<Route path="*">
+					<Login />
+				</Route>
+			</Switch>
+		</div>
+	);
 }
