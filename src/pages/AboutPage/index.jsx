@@ -60,6 +60,9 @@ export default function AboutPage() {
         <li>
           <a href="https://storyset.com/communication">Communication illustrations by Storyset</a>
         </li>
+        <li>
+          <a href="https://storyset.com/home">Home illustrations by Storyset</a>
+        </li>
       </ul>
     </Container>
   );
