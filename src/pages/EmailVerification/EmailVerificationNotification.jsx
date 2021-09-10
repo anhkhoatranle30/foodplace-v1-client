@@ -18,8 +18,8 @@ export default function EmailVerificationNotification() {
   const classes = useStyles();
 
   return (
-    <Container className={classes.root}>
-      <Grid container direction="column" alignItems="center" justifyContent="center">
+    <Container>
+      <Grid className={classes.root} container direction="column" alignItems="center" justifyContent="center">
         <Typography variant="h3">Email verification</Typography>
         <Typography variant="body1">
           You are way to go.
