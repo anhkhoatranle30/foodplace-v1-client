@@ -23,6 +23,15 @@
             "error",
             "windows"
         ],
-        "no-param-reassign": "off"
+        "no-param-reassign": "off",
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ]
     }
 }
