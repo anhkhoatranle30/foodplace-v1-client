@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import useQuery from '../../hooks/useQuery';
 import { STATUS } from '../../constant';
 import userApi from '../../apis/userApi';
+import SuccessImg from '../../static/images/email-verification-success.svg';
 
 const useStyles = makeStyles({
   root: {
@@ -70,14 +71,17 @@ export default function EmailVerificationResult() {
       }
       default: {
         return (
-          <Grid className={classes.success} container alignItems="center" justifyContent="center">
-            <CheckCircle />
-            <Typography>
-              Congratulations! You have successfully registered.
-              <Button color="primary" component={Link} to="/">
-                Login your account.
-              </Button>
-            </Typography>
+          <Grid className={classes.success} container direction="column" alignItems="center" justifyContent="center">
+            <Grid container alignItems="center" justifyContent="center">
+              <CheckCircle />
+              <Typography>
+                Congratulations! You have successfully registered.
+                <Button color="primary" component={Link} to="/">
+                  Login your account.
+                </Button>
+              </Typography>
+            </Grid>
+            <img className={classes.img} src={SuccessImg} alt="successful-email-verification" />
           </Grid>
         );
       }
