@@ -36,20 +36,19 @@ export default function EmailVerificationResult() {
 	const [status, setStatus] = useState(STATUS.IDLE);
 	const [error, setError] = useState(null);
 
-	const verifyEmail = async () => {
-		setStatus(STATUS.LOADING);
-		try {
-			await userApi.verifyEmail(token);
-			setStatus(STATUS.SUCCESS);
-		} catch (err) {
-			setStatus(STATUS.ERROR);
-			setError(err.response.data);
-		}
-	};
-
 	useEffect(() => {
+		const verifyEmail = async () => {
+			setStatus(STATUS.LOADING);
+			try {
+				await userApi.verifyEmail(token);
+				setStatus(STATUS.SUCCESS);
+			} catch (err) {
+				setStatus(STATUS.ERROR);
+				setError(err.response.data);
+			}
+		};
 		verifyEmail();
-	},[]);
+	},[token]);
 
 	const renderBody = () => {
 		switch (status) {
