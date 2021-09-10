@@ -49,7 +49,7 @@ export default function EmailVerificationResult() {
 
   useEffect(() => {
     verifyEmail();
-  }, []);
+  });
 
   const renderBody = () => {
     switch (status) {

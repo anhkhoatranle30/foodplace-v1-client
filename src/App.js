@@ -13,7 +13,7 @@ function App() {
   const isUserLoggedIn = useSelector(
     (state) => state.user.status === 'success',
   );
-  const isUserEmailVerified = useSelector((state) => state.user.confirmed === true);
+  const isUserEmailVerified = useSelector((state) => state.user.data.confirmed === true);
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
 
