@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import EmailVerificationResult from '../../pages/EmailVerification/EmailVerificationResult';
 import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 
@@ -9,6 +10,9 @@ export default function UnauthenticatedRoute() {
       <Switch>
         <Route exact path="/register">
           <Register />
+        </Route>
+        <Route path="/users/confirmation">
+          <EmailVerificationResult />
         </Route>
         <Route path="*">
           <Login />
