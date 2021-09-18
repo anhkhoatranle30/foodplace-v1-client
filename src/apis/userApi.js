@@ -12,7 +12,9 @@ const register = (email, password) =>
   });
 const getOtpThroughEmail = (token) =>
   rootApi.get('/users/otp', {
-    headers: `Bearer ${token}`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
 const userApi = {

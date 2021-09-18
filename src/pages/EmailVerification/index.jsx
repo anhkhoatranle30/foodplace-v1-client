@@ -7,11 +7,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import userApi from '../../apis/userApi';
 import Separator from '../../components/Separator';
 import { STATUS } from '../../constant';
-import useQuery from '../../hooks/useQuery';
 import ErrorImg from '../../static/images/email-verification-error.svg';
 import Img from '../../static/images/email-verification-notification.svg';
 import SuccessImg from '../../static/images/email-verification-success.svg';
@@ -39,10 +40,22 @@ const useStyles = makeStyles({
 
 export default function EmailVerification() {
   const classes = useStyles();
-  const query = useQuery();
-  const token = query.get('token');
+  const token = useSelector((state) => state.user.token);
   const [status, setStatus] = useState(STATUS.IDLE);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const getOtp = async () => {
+      console.log('get otp');
+      try {
+        await userApi.getOtpThroughEmail(token);
+      } catch (err) {
+        console.log(err);
+        setError(err);
+      }
+    };
+    getOtp();
+  }, [token]);
 
   const renderBody = () => {
     switch (status) {
