@@ -46,7 +46,6 @@ export default function EmailVerification() {
 
   useEffect(() => {
     const getOtp = async () => {
-      console.log('get otp');
       try {
         await userApi.getOtpThroughEmail(token);
       } catch (err) {
