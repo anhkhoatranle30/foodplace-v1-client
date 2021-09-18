@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
 import {
   Button,
   CircularProgress,
   Container,
   Grid,
-  Typography,
   TextField,
+  Typography,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import useQuery from '../../hooks/useQuery';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Separator from '../../components/Separator';
 import { STATUS } from '../../constant';
-import userApi from '../../apis/userApi';
-import SuccessImg from '../../static/images/email-verification-success.svg';
+import useQuery from '../../hooks/useQuery';
 import ErrorImg from '../../static/images/email-verification-error.svg';
 import Img from '../../static/images/email-verification-notification.svg';
-import Separator from '../../components/Separator';
+import SuccessImg from '../../static/images/email-verification-success.svg';
 
 const useStyles = makeStyles({
   root: {
@@ -44,20 +43,6 @@ export default function EmailVerification() {
   const token = query.get('token');
   const [status, setStatus] = useState(STATUS.IDLE);
   const [error, setError] = useState(null);
-
-  //   useEffect(() => {
-  //     const verifyEmail = async () => {
-  //       setStatus(STATUS.LOADING);
-  //       try {
-  //         await userApi.verifyEmail(token);
-  //         setStatus(STATUS.SUCCESS);
-  //       } catch (err) {
-  //         setStatus(STATUS.ERROR);
-  //         setError(err.response.data);
-  //       }
-  //     };
-  //     verifyEmail();
-  //   }, [token]);
 
   const renderBody = () => {
     switch (status) {
