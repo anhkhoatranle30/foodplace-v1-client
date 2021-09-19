@@ -58,8 +58,16 @@ export default function EmailVerification() {
     getOtp();
   }, [token]);
 
-  const handleOtpFormSubmit = (data) => {
-    console.log(data);
+  const handleOtpFormSubmit = async (data) => {
+    const { otp } = data;
+    setStatus(STATUS.LOADING);
+    try {
+      await userApi.verifyEmail(token, otp);
+      setStatus(STATUS.SUCCESS);
+    } catch (err) {
+      setStatus(STATUS.ERROR);
+      setError(err.response.data);
+    }
   };
 
   const renderBody = () => {
