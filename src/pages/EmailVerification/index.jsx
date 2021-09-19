@@ -8,15 +8,15 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import userApi from '../../apis/userApi';
+import { logoutUserAction } from '../../app/slices/userSlice';
 import Separator from '../../components/Separator';
 import { STATUS } from '../../constant';
 import ErrorImg from '../../static/images/email-verification-error.svg';
 import Img from '../../static/images/email-verification-notification.svg';
 import SuccessImg from '../../static/images/email-verification-success.svg';
-import { useForm } from 'react-hook-form';
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +42,7 @@ const useStyles = makeStyles({
 export default function EmailVerification() {
   const classes = useStyles();
   const token = useSelector((state) => state.user.token);
+  const dispatch = useDispatch();
   const [status, setStatus] = useState(STATUS.IDLE);
   const [error, setError] = useState(null);
   const { register, handleSubmit } = useForm();
@@ -70,6 +71,10 @@ export default function EmailVerification() {
     }
   };
 
+  const handleLogoutUser = () => {
+    dispatch(logoutUserAction());
+  };
+
   const renderBody = () => {
     switch (status) {
       case STATUS.LOADING: {
@@ -91,10 +96,18 @@ export default function EmailVerification() {
           >
             <Grid container alignItems="center" justifyContent="center">
               <Typography variant="h4">
-                Error : {error?.message}. Please reload the page and login to
-                your account again to get another OTP!
+                Error : {error?.message}. Please login to your account again to
+                get another OTP!
               </Typography>
             </Grid>
+            <Button
+              onClick={() => handleLogoutUser()}
+              variant="contained"
+              color="secondary"
+              size="large"
+            >
+              Login again
+            </Button>
             <img
               className={classes.img}
               src={ErrorImg}
@@ -115,7 +128,11 @@ export default function EmailVerification() {
             <Grid container alignItems="center" justifyContent="center">
               <Typography variant="h4">
                 Congratulations! You have successfully registered.
-                <Button color="primary" component={Link} to="/">
+                <Button
+                  onClick={() => handleLogoutUser()}
+                  color="primary"
+                  variant="contained"
+                >
                   Login your account.
                 </Button>
               </Typography>
