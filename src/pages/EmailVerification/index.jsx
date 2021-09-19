@@ -16,6 +16,7 @@ import { STATUS } from '../../constant';
 import ErrorImg from '../../static/images/email-verification-error.svg';
 import Img from '../../static/images/email-verification-notification.svg';
 import SuccessImg from '../../static/images/email-verification-success.svg';
+import { useForm } from 'react-hook-form';
 
 const useStyles = makeStyles({
   root: {
@@ -43,6 +44,7 @@ export default function EmailVerification() {
   const token = useSelector((state) => state.user.token);
   const [status, setStatus] = useState(STATUS.IDLE);
   const [error, setError] = useState(null);
+  const { register, handleSubmit } = useForm();
 
   useEffect(() => {
     const getOtp = async () => {
@@ -55,6 +57,10 @@ export default function EmailVerification() {
     };
     getOtp();
   }, [token]);
+
+  const handleOtpFormSubmit = (data) => {
+    console.log(data);
+  };
 
   const renderBody = () => {
     switch (status) {
@@ -125,15 +131,29 @@ export default function EmailVerification() {
               You are way to go. There is only one more step before you can use
               our app. Please check your email for OTP code.
             </Typography>
-            <form className={classes.form}>
+            <form
+              onSubmit={handleSubmit(handleOtpFormSubmit)}
+              id="otp-form"
+              className={classes.form}
+            >
               <Grid
                 container
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <TextField id="otp-input" label="OTP" variant="outlined" />
+                <TextField
+                  id="otp-input"
+                  label="OTP"
+                  variant="outlined"
+                  {...register('otp')}
+                />
                 <Separator />
-                <Button variant="contained" color="primary">
+                <Button
+                  type="submit"
+                  form="otp-form"
+                  variant="contained"
+                  color="primary"
+                >
                   Submit
                 </Button>
               </Grid>
