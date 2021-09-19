@@ -91,7 +91,8 @@ export default function EmailVerification() {
           >
             <Grid container alignItems="center" justifyContent="center">
               <Typography variant="h4">
-                Error : {error?.message}. Please try again later!
+                Error : {error?.message}. Please reload the page and login to
+                your account again to get another OTP!
               </Typography>
             </Grid>
             <img
