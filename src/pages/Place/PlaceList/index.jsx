@@ -51,7 +51,9 @@ export default function PlacesList() {
   useEffect(() => {
     async function fetchQuantity() {
       try {
-        const response = await placeApi.fetchQuantity(token);
+        const response = await placeApi.fetchQuantity(token, {
+          search: searchString,
+        });
         setQuantity(response.data.quantity);
       } catch (error) {
         window.alert(error.response.data);
@@ -59,7 +61,7 @@ export default function PlacesList() {
     }
 
     fetchQuantity();
-  }, [token]);
+  }, [token, searchString]);
   useEffect(() => {
     async function fetchPlaces() {
       setIsLoading(true);
@@ -67,6 +69,7 @@ export default function PlacesList() {
         const placesResponse = await placeApi.fetchAll(token, {
           skip: itemsEachPage * (currentPage - 1),
           limit: itemsEachPage,
+          search: searchString,
         });
         setPlaces(placesResponse.data);
         setIsLoading(false);
@@ -77,7 +80,7 @@ export default function PlacesList() {
     }
 
     fetchPlaces();
-  }, [token, currentPage]);
+  }, [token, currentPage, searchString]);
   //#endregion
 
   const itemsEachPage = 12;
@@ -147,7 +150,7 @@ export default function PlacesList() {
   };
 
   const handleSearchSubmit = (formValues) => {
-    console.log(formValues);
+    setSearchString(formValues.search);
   };
 
   return (

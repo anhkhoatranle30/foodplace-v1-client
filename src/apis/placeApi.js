@@ -47,10 +47,13 @@ const fetchImageById = (token, placeId) =>
     responseType: 'blob',
   });
 
-const fetchQuantity = (token) =>
+const fetchQuantity = (token, { search }) =>
   rootApi.get('/places/quantity', {
     headers: {
       Authorization: `Bearer ${token}`,
+    },
+    params: {
+      search,
     },
   });
 
