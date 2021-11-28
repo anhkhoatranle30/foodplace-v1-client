@@ -1,23 +1,23 @@
 import {
-	Box,
-	Button,
-	Card,
-	CardActionArea,
-	CardActions,
-	CardContent,
-	CardMedia,
-	Divider,
-	Grid,
-	Typography,
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Divider,
+  Grid,
+  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	AccessTime as AccessTimeIcon,
-	Favorite as FavoriteIcon,
-	FavoriteBorder as FavoriteBorderIcon,
-	Grade as GradeIcon,
-	LocationOn as LocationOnIcon,
-	Loyalty as LoyaltyIcon,
+  AccessTime as AccessTimeIcon,
+  Favorite as FavoriteIcon,
+  FavoriteBorder as FavoriteBorderIcon,
+  Grade as GradeIcon,
+  LocationOn as LocationOnIcon,
+  Loyalty as LoyaltyIcon,
 } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import PlaceInfo from './placeInfo';
@@ -28,126 +28,130 @@ import placeApi from '../../apis/placeApi';
 import { Skeleton } from '@material-ui/lab';
 
 const useStyles = makeStyles({
-	root: {
-		maxWidth: 300,
-		margin: '20px 0px',
-	},
-	button: {
-		fontWeight: 'bold',
-	},
+  root: {
+    maxWidth: 300,
+    margin: '20px 0px',
+  },
+  button: {
+    fontWeight: 'bold',
+  },
 });
 
 export default function PlaceCard(props) {
-	const classes = useStyles();
-	const token = useSelector((state) => state.user.token);
-	const [place, setPlace] = useState(props.place);
-	const { isSkeleton } = props;
-	const [isFetching, setIsFetching] = useState(true);
+  const classes = useStyles();
+  const token = useSelector((state) => state.user.token);
+  const [place, setPlace] = useState(props.place);
+  const { isSkeleton } = props;
+  const [isFetching, setIsFetching] = useState(true);
 
-	useEffect(() => {
-		async function getCategoryAndImage() {
-			try {
-				const categoryResponse = await categoryApi.fetchById(
-					token,
-					place.categoryId
-				);
-				const imageResponse = await placeApi.fetchImageById(token, place._id);
-				const imageUrl = URL.createObjectURL(imageResponse.data);
+  useEffect(() => {
+    async function getCategoryAndImage() {
+      try {
+        const categoryResponse = await categoryApi.fetchById(
+          token,
+          place.categoryId
+        );
 
-				setPlace({
-					...place,
-					category: categoryResponse.data,
-					image: imageUrl,
-				});
+        let imageUrl;
+        if (!place.imageUrl) {
+          const imageResponse = await placeApi.fetchImageById(token, place._id);
+          imageUrl = URL.createObjectURL(imageResponse.data);
+        }
 
-				setIsFetching(false);
-			} catch (error) {
-				console.log(error);
-				setIsFetching(false);
-			}
-		}
+        setPlace({
+          ...place,
+          category: categoryResponse.data,
+          image: place.imageUrl || imageUrl,
+        });
 
-		if (!isSkeleton && (!place.category || !place.image)) {
-			getCategoryAndImage();
-		}
-	}, [place, token, isSkeleton]);
+        setIsFetching(false);
+      } catch (error) {
+        console.log(error);
+        setIsFetching(false);
+      }
+    }
 
-	return (
-		<Card className={classes.root}>
-			<CardActionArea>
-				{isFetching || isSkeleton ? (
-					<Skeleton height={150} />
-				) : (
-					<CardMedia
-						component="img"
-						alt="Contemplative Reptile"
-						height="150"
-						image={place.image}
-						// image="https://static.riviu.co/320/image/2021/01/25/9d61b012b56bbf4260697fcbcdfe2e0b.jpeg"
-						title="Contemplative Reptile"
-					/>
-				)}
+    if (!isSkeleton && (!place.category || !place.image)) {
+      getCategoryAndImage();
+    }
+  }, [place, token, isSkeleton]);
 
-				<CardContent>
-					<Grid container>
-						<Grid item container justifyContent="center" alignItems="center">
-							<Typography component="div">
-								<Box fontWeight={900} fontStyle="underline" fontSize={25}>
-									{isSkeleton ? <Skeleton /> : place.name}
-								</Box>
-							</Typography>
-							<PlaceInfo
-								innerIcon={LoyaltyIcon}
-								innerContent={
-									isFetching || isSkeleton ? <Skeleton /> : place.category?.name
-								}
-								infoColor="#0B7FAB"
-							/>
+  return (
+    <Card className={classes.root}>
+      <CardActionArea>
+        {isFetching || isSkeleton ? (
+          <Skeleton height={150} />
+        ) : (
+          <CardMedia
+            component="img"
+            alt="Contemplative Reptile"
+            height="150"
+            image={place.image}
+            // image="https://static.riviu.co/320/image/2021/01/25/9d61b012b56bbf4260697fcbcdfe2e0b.jpeg"
+            title="Contemplative Reptile"
+          />
+        )}
 
-							<PlaceInfo
-								innerIcon={AccessTimeIcon}
-								innerContent={
-									isSkeleton ? (
-										<Skeleton />
-									) : (
-										`${formatTime(place.openingHours.start)} - ${formatTime(
-											place.openingHours.end
-										)}`
-									)
-								}
-							/>
-							<PlaceInfo
-								innerIcon={GradeIcon}
-								innerContent={isSkeleton ? <Skeleton /> : `${place.rating}/10`}
-								infoColor="orange"
-							/>
-							<PlaceInfo
-								innerIcon={LocationOnIcon}
-								innerContent={isSkeleton ? <Skeleton /> : place.address}
-								infoColor="red"
-							/>
-						</Grid>
-					</Grid>
-				</CardContent>
-			</CardActionArea>
-			<Divider />
-			<CardActions>
-				{isSkeleton ? (
-					<Skeleton width={30} />
-				) : place.isYourFavorite ? (
-					<Button
-						className={classes.button}
-						color="secondary"
-						startIcon={<FavoriteIcon />}
-					>
+        <CardContent>
+          <Grid container>
+            <Grid item container justifyContent="center" alignItems="center">
+              <Typography component="div">
+                <Box fontWeight={900} fontStyle="underline" fontSize={25}>
+                  {isSkeleton ? <Skeleton /> : place.name}
+                </Box>
+              </Typography>
+              <PlaceInfo
+                innerIcon={LoyaltyIcon}
+                innerContent={
+                  isFetching || isSkeleton ? <Skeleton /> : place.category?.name
+                }
+                infoColor="#0B7FAB"
+              />
+
+              <PlaceInfo
+                innerIcon={AccessTimeIcon}
+                innerContent={
+                  isSkeleton ? (
+                    <Skeleton />
+                  ) : (
+                    `${formatTime(place.openingHours.start)} - ${formatTime(
+                      place.openingHours.end
+                    )}`
+                  )
+                }
+              />
+              <PlaceInfo
+                innerIcon={GradeIcon}
+                innerContent={isSkeleton ? <Skeleton /> : `${place.rating}/10`}
+                infoColor="orange"
+              />
+              <PlaceInfo
+                innerIcon={LocationOnIcon}
+                innerContent={isSkeleton ? <Skeleton /> : place.address}
+                infoColor="red"
+              />
+            </Grid>
+          </Grid>
+        </CardContent>
+      </CardActionArea>
+      <Divider />
+      <CardActions>
+        {isSkeleton ? (
+          <Skeleton width={30} />
+        ) : place.isYourFavorite ? (
+          <Button
+            className={classes.button}
+            color="secondary"
+            startIcon={<FavoriteIcon />}
+          >
             Love it!
-					</Button>
-				) : (
-					<Button className={classes.button} startIcon={<FavoriteBorderIcon />}>
+          </Button>
+        ) : (
+          <Button className={classes.button} startIcon={<FavoriteBorderIcon />}>
             Love it!
-					</Button>
-				)}
-			</CardActions>
-		</Card>
-	);
+          </Button>
+        )}
+      </CardActions>
+    </Card>
+  );
 }
