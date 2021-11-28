@@ -79,7 +79,7 @@ export default function PlacesList() {
     }
 
     fetchPlaces();
-  }, [token, currentPage, searchString]);
+  }, [token, currentPage, searchString, quantity]);
   //#endregion
 
   const itemsEachPage = 12;
@@ -103,7 +103,7 @@ export default function PlacesList() {
     }
     return places.map((place) => (
       <Grid key={place._id} item xs={12} sm={6} md={4} lg={3}>
-        <PlaceCard place={place} />
+        <PlaceCard place={place} triggerDelete={handlePlaceDelete} />
       </Grid>
     ));
   };
@@ -150,6 +150,13 @@ export default function PlacesList() {
 
   const handleSearchSubmit = (formValues) => {
     setSearchString(formValues.search);
+  };
+
+  const handlePlaceDelete = (deletedPlace) => {
+    setPlaces((places) =>
+      places.filter((place) => place._id !== deletedPlace._id)
+    );
+    setQuantity((quantity) => quantity - 1);
   };
 
   return (
