@@ -2,7 +2,7 @@
 const prod = {
   url: {
     API_URL: 'https://khoatrn-foodplace-v1.herokuapp.com/',
-    IMAGE_SERVER_URL: 'http://localhost:5004',
+    IMAGE_SERVER_URL: 'https://khoatrn-resource-server.herokuapp.com/',
   },
 };
 const dev = {
