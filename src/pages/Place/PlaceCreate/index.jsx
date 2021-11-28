@@ -17,14 +17,16 @@ import {
   Switch,
   Typography,
 } from '@material-ui/core';
+import { AddPhotoAlternate as AddPhotoAlternateIcon } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import imageApis from '../../../apis/images';
 import { placeSchema } from '../../../schemas/yup';
 import placeApi from './../../../apis/placeApi';
+import ImageWatched from './ImageWatched';
 import TimePicker from './TimePicker';
-import imageApis from '../../../apis/images';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
+  },
+  imageInput: {
+    display: 'none',
   },
 }));
 
@@ -79,13 +84,21 @@ export default function PlaceCreate() {
     resolver: yupResolver(placeSchema),
   });
 
+  //#region useState (selectedImage, isSuccessOpen, isLoadingOpen, isErrorOpen)
   const [isSuccessOpen, setSuccessOpen] = useState(false);
   const [isLoadingOpen, setLoadingOpen] = useState(false);
   const [isErrorOpen, setErrorOpen] = useState(false);
+  //#endregion
 
+  //#region useEffect
+  //#endregion
+
+  //#region Redux hooks (categories, token)
   const categories = useSelector((state) => state.category.data);
   const token = useSelector((state) => state.user.token);
+  //#endregion
 
+  //#region render functions
   const renderRatingList = () => {
     const result = [];
     for (let i = 0; i <= 10; i++) {
@@ -105,7 +118,9 @@ export default function PlaceCreate() {
       </MenuItem>
     ));
   };
+  //#endregion
 
+  //#region handle functions
   const handleFormSubmit = async (data) => {
     setLoadingOpen(true);
     const imageFile = data.image[0];
@@ -140,6 +155,7 @@ export default function PlaceCreate() {
 
     setErrorOpen(false);
   };
+  //#endregion
 
   return (
     <Container className={classes.root}>
@@ -316,15 +332,20 @@ export default function PlaceCreate() {
                 accept="image/*"
                 className={classes.imageInput}
                 id="contained-button-file"
-                multiple
                 type="file"
                 {...register('image')}
               />
-              {/* <label htmlFor="contained-button-file">
-                <Button variant="contained" color="primary" component="span">
-                  Upload
+              <ImageWatched control={control} />
+              <label htmlFor="contained-button-file">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  startIcon={<AddPhotoAlternateIcon />}
+                >
+                  Upload Image
                 </Button>
-              </label> */}
+              </label>
             </Grid>
           </Grid>
           {/* submit button */}
