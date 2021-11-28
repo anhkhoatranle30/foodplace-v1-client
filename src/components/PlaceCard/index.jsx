@@ -122,11 +122,11 @@ export default function PlaceCard(props) {
           ) : (
             <CardMedia
               component="img"
-              alt="Contemplative Reptile"
+              alt={place.name}
               height="150"
               image={place.image}
               // image="https://static.riviu.co/320/image/2021/01/25/9d61b012b56bbf4260697fcbcdfe2e0b.jpeg"
-              title="Contemplative Reptile"
+              title={place.name}
             />
           )}
 
