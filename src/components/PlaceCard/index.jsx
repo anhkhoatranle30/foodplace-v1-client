@@ -8,24 +8,26 @@ import {
   CardMedia,
   Divider,
   Grid,
+  IconButton,
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AccessTime as AccessTimeIcon,
+  Delete as DeleteIcon,
   Favorite as FavoriteIcon,
   FavoriteBorder as FavoriteBorderIcon,
   Grade as GradeIcon,
   LocationOn as LocationOnIcon,
   Loyalty as LoyaltyIcon,
 } from '@material-ui/icons';
+import { Skeleton } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
-import PlaceInfo from './placeInfo';
-import formatTime from '../../utils/formatTime';
-import categoryApi from './../../apis/categoryApi';
 import { useSelector } from 'react-redux';
 import placeApi from '../../apis/placeApi';
-import { Skeleton } from '@material-ui/lab';
+import formatTime from '../../utils/formatTime';
+import categoryApi from './../../apis/categoryApi';
+import PlaceInfo from './placeInfo';
 
 const useStyles = makeStyles({
   root: {
@@ -136,21 +138,33 @@ export default function PlaceCard(props) {
       </CardActionArea>
       <Divider />
       <CardActions>
-        {isSkeleton ? (
-          <Skeleton width={30} />
-        ) : place.isYourFavorite ? (
-          <Button
-            className={classes.button}
-            color="secondary"
-            startIcon={<FavoriteIcon />}
-          >
-            Love it!
-          </Button>
-        ) : (
-          <Button className={classes.button} startIcon={<FavoriteBorderIcon />}>
-            Love it!
-          </Button>
-        )}
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid>
+            {isSkeleton ? (
+              <Skeleton width={30} />
+            ) : place.isYourFavorite ? (
+              <Button
+                className={classes.button}
+                color="secondary"
+                startIcon={<FavoriteIcon />}
+              >
+                Love it!
+              </Button>
+            ) : (
+              <Button
+                className={classes.button}
+                startIcon={<FavoriteBorderIcon />}
+              >
+                Love it!
+              </Button>
+            )}
+          </Grid>
+          <Grid>
+            <IconButton aria-label="Delete" className={classes.margin}>
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
       </CardActions>
     </Card>
   );
