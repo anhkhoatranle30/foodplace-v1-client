@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { placeSchema } from '../../../schemas/yup';
 import placeApi from './../../../apis/placeApi';
 import TimePicker from './TimePicker';
+import imageApis from '../../../apis/images'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -110,11 +111,15 @@ export default function PlaceCreate() {
 		const imageFile = data.image[0];
 		delete data.image;
 		try {
+			if (imageFile) {
+				// await placeApi.uploadImage(token, newPlace._id, imageFile);
+				const imageResponse = await imageApis.postOne(imageFile);
+				const imageUrl = imageResponse.data.url;
+				data.imageUrl = imageUrl;
+			}
 			const response = await placeApi.createNewPlace(token, data);
 			const newPlace = response.data;
-			if (imageFile) {
-				await placeApi.uploadImage(token, newPlace._id, imageFile);
-			}
+      console.log("🚀 ~ file: index.jsx ~ line 122 ~ handleFormSubmit ~ newPlace", newPlace)
 			setSuccessOpen(true);
 			setLoadingOpen(false);
 		} catch (error) {
