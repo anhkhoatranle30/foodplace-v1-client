@@ -28,6 +28,7 @@ import placeApi from '../../apis/placeApi';
 import formatTime from '../../utils/formatTime';
 import categoryApi from './../../apis/categoryApi';
 import PlaceInfo from './placeInfo';
+import MyDialog from '../MyDialog';
 
 const useStyles = makeStyles({
   root: {
@@ -43,8 +44,9 @@ export default function PlaceCard(props) {
   const classes = useStyles();
   const token = useSelector((state) => state.user.token);
   const [place, setPlace] = useState(props.place);
-  const { isSkeleton } = props;
+  const { isSkeleton, triggerDelete } = props;
   const [isFetching, setIsFetching] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     async function getCategoryAndImage() {
@@ -76,96 +78,141 @@ export default function PlaceCard(props) {
     if (!isSkeleton && (!place.category || !place.image)) {
       getCategoryAndImage();
     }
+
+    return () => {
+      handleDialogClose();
+    };
   }, [place, token, isSkeleton]);
 
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleDialogOpen = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleDeleteOk = async () => {
+    try {
+      const response = await placeApi.deleteById(token, place._id);
+      if (typeof triggerDelete === 'function') {
+        await triggerDelete(response.data);
+      }
+      handleDialogClose();
+    } catch (error) {
+      console.log('No');
+    }
+  };
+
   return (
-    <Card className={classes.root}>
-      <CardActionArea>
-        {isFetching || isSkeleton ? (
-          <Skeleton height={150} />
-        ) : (
-          <CardMedia
-            component="img"
-            alt="Contemplative Reptile"
-            height="150"
-            image={place.image}
-            // image="https://static.riviu.co/320/image/2021/01/25/9d61b012b56bbf4260697fcbcdfe2e0b.jpeg"
-            title="Contemplative Reptile"
-          />
-        )}
+    <>
+      <MyDialog
+        isOpen={isDialogOpen}
+        onClose={handleDialogClose}
+        triggerOk={handleDeleteOk}
+        triggerCancel={handleDialogClose}
+        title="Delete place"
+        description={`Do you want to delete ${place?.name}?`}
+        okText="Delete"
+      />
+      <Card className={classes.root}>
+        <CardActionArea>
+          {isFetching || isSkeleton ? (
+            <Skeleton height={150} />
+          ) : (
+            <CardMedia
+              component="img"
+              alt="Contemplative Reptile"
+              height="150"
+              image={place.image}
+              // image="https://static.riviu.co/320/image/2021/01/25/9d61b012b56bbf4260697fcbcdfe2e0b.jpeg"
+              title="Contemplative Reptile"
+            />
+          )}
 
-        <CardContent>
-          <Grid container>
-            <Grid item container justifyContent="center" alignItems="center">
-              <Typography component="div">
-                <Box fontWeight={900} fontStyle="underline" fontSize={25}>
-                  {isSkeleton ? <Skeleton /> : place.name}
-                </Box>
-              </Typography>
-              <PlaceInfo
-                innerIcon={LoyaltyIcon}
-                innerContent={
-                  isFetching || isSkeleton ? <Skeleton /> : place.category?.name
-                }
-                infoColor="#0B7FAB"
-              />
+          <CardContent>
+            <Grid container>
+              <Grid item container justifyContent="center" alignItems="center">
+                <Typography component="div">
+                  <Box fontWeight={900} fontStyle="underline" fontSize={25}>
+                    {isSkeleton ? <Skeleton /> : place.name}
+                  </Box>
+                </Typography>
+                <PlaceInfo
+                  innerIcon={LoyaltyIcon}
+                  innerContent={
+                    isFetching || isSkeleton ? (
+                      <Skeleton />
+                    ) : (
+                      place.category?.name
+                    )
+                  }
+                  infoColor="#0B7FAB"
+                />
 
-              <PlaceInfo
-                innerIcon={AccessTimeIcon}
-                innerContent={
-                  isSkeleton ? (
-                    <Skeleton />
-                  ) : (
-                    `${formatTime(place.openingHours.start)} - ${formatTime(
-                      place.openingHours.end
-                    )}`
-                  )
-                }
-              />
-              <PlaceInfo
-                innerIcon={GradeIcon}
-                innerContent={isSkeleton ? <Skeleton /> : `${place.rating}/10`}
-                infoColor="orange"
-              />
-              <PlaceInfo
-                innerIcon={LocationOnIcon}
-                innerContent={isSkeleton ? <Skeleton /> : place.address}
-                infoColor="red"
-              />
+                <PlaceInfo
+                  innerIcon={AccessTimeIcon}
+                  innerContent={
+                    isSkeleton ? (
+                      <Skeleton />
+                    ) : (
+                      `${formatTime(place.openingHours.start)} - ${formatTime(
+                        place.openingHours.end
+                      )}`
+                    )
+                  }
+                />
+                <PlaceInfo
+                  innerIcon={GradeIcon}
+                  innerContent={
+                    isSkeleton ? <Skeleton /> : `${place.rating}/10`
+                  }
+                  infoColor="orange"
+                />
+                <PlaceInfo
+                  innerIcon={LocationOnIcon}
+                  innerContent={isSkeleton ? <Skeleton /> : place.address}
+                  infoColor="red"
+                />
+              </Grid>
+            </Grid>
+          </CardContent>
+        </CardActionArea>
+        <Divider />
+        <CardActions>
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid>
+              {isSkeleton ? (
+                <Skeleton width={30} />
+              ) : place.isYourFavorite ? (
+                <Button
+                  className={classes.button}
+                  color="secondary"
+                  startIcon={<FavoriteIcon />}
+                >
+                  Love it!
+                </Button>
+              ) : (
+                <Button
+                  className={classes.button}
+                  startIcon={<FavoriteBorderIcon />}
+                >
+                  Love it!
+                </Button>
+              )}
+            </Grid>
+            <Grid>
+              <IconButton
+                aria-label="Delete"
+                className={classes.margin}
+                onClick={handleDialogOpen}
+              >
+                <DeleteIcon />
+              </IconButton>
             </Grid>
           </Grid>
-        </CardContent>
-      </CardActionArea>
-      <Divider />
-      <CardActions>
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Grid>
-            {isSkeleton ? (
-              <Skeleton width={30} />
-            ) : place.isYourFavorite ? (
-              <Button
-                className={classes.button}
-                color="secondary"
-                startIcon={<FavoriteIcon />}
-              >
-                Love it!
-              </Button>
-            ) : (
-              <Button
-                className={classes.button}
-                startIcon={<FavoriteBorderIcon />}
-              >
-                Love it!
-              </Button>
-            )}
-          </Grid>
-          <Grid>
-            <IconButton aria-label="Delete" className={classes.margin}>
-              <DeleteIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
+    </>
   );
 }
