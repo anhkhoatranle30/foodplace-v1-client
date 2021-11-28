@@ -83,6 +83,13 @@ const uploadImage = (token, placeId, imageFile) => {
   });
 };
 
+const deleteById = (token, placeId) =>
+  rootApi.delete(`/places/${placeId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
 const placeApi = {
   fetchAll,
   fetchById,
@@ -92,6 +99,7 @@ const placeApi = {
   fetchQuantity,
   createNewPlace,
   uploadImage,
+  deleteById,
 };
 
 export default placeApi;
